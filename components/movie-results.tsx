@@ -22,7 +22,7 @@ export async function MovieResults({ query }: { query: string | null }) {
     }
 
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
         {results.map((result) => (
           <MovieCard key={String(result.id)} movie={result.movie} />
         ))}

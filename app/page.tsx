@@ -1,6 +1,4 @@
 import { MovieGrid } from "@/components/movie-grid";
-import { QuerySearch } from "@/components/query-search";
-import { FilterSearch } from "@/components/filter-search";
 import { use } from "react";
 import { SearchLayout } from "@/components/search-layout";
 
@@ -12,9 +10,15 @@ export default function Home(props: { searchParams: SearchParams }) {
   const filterQuery = searchParams.filter || null;
 
   return (
-    <div className="container py-24 space-y-4">
-      <SearchLayout />
-      <MovieGrid searchQuery={searchQuery} filterQuery={filterQuery} />
+    <div className="container py-24">
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div className="md:col-span-4 lg:col-span-3">
+          <SearchLayout />
+        </div>
+        <div className="md:col-span-8 lg:col-span-9">
+          <MovieGrid searchQuery={searchQuery} filterQuery={filterQuery} />
+        </div>
+      </div>
     </div>
   );
 }
