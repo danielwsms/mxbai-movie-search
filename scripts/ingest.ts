@@ -1,21 +1,10 @@
 import { getQdrantClient } from "../lib/qdrant";
-import { Mixedbread } from "@mixedbread/sdk";
+import { generateEmbeddings } from "../actions/embed";
 import fs from "fs";
 import { parse } from "csv-parse/sync";
 import path from "path";
-import dotenv from "dotenv";
 import { v4 as uuidv4 } from "uuid";
-
-dotenv.config();
-
-if (!process.env.MIXEDBREAD_API_KEY) {
-  throw new Error("MIXEDBREAD_API_KEY is not set");
-}
-
-const mxbai = new Mixedbread({
-  apiKey: process.env.MIXEDBREAD_API_KEY,
-});
-
+import { MovieData } from "../types";
 const qdrantClient = getQdrantClient();
 
 const COLLECTION_NAME = "movies";
@@ -25,26 +14,6 @@ const VECTOR_SIZE = 1024;
 const createMovieTemplate = (title: string, overview: string): string => {
   return `${title}: ${overview}`;
 };
-
-interface MovieData {
-  Poster_Link: string;
-  Series_Title: string;
-  Released_Year: string;
-  Certificate: string;
-  Runtime: string;
-  Genre: string;
-  IMDB_Rating: string;
-  Overview: string;
-  Meta_score: string;
-  Director: string;
-  Star1: string;
-  Star2: string;
-  Star3: string;
-  Star4: string;
-  No_of_Votes: string;
-  Gross: string;
-  id?: string;
-}
 
 async function createCollection() {
   try {
@@ -105,12 +74,7 @@ async function processMovies() {
         )}`
       );
 
-      const embeddingResponse = await mxbai.embed({
-        model: "mixedbread-ai/mxbai-embed-large-v1",
-        input: templates,
-        normalized: true,
-        encoding_format: "int8",
-      });
+      const embeddingResponse = await generateEmbeddings(templates);
 
       console.log("Sample embedding format:", {
         type: typeof embeddingResponse.data[0].embedding,
