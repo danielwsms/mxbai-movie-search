@@ -30,7 +30,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Header />
-          <div className="flex flex-col h-svh container mx-auto max-w-7xl px-4 md:px-6">
+          <div className="flex flex-col h-full container mx-auto max-w-7xl px-4 md:px-6 pb-10">
             {children}
           </div>
         </ThemeProvider>

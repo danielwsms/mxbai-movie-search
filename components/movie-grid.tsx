@@ -5,10 +5,8 @@ import { MovieGridSkeleton } from "@/components/movie-skeleton";
 
 export function MovieGrid({
   searchQuery,
-  filterQuery,
 }: {
   searchQuery?: string | string[] | null;
-  filterQuery?: string | string[] | null;
 }) {
   const query =
     typeof searchQuery === "string"

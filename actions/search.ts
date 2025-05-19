@@ -25,7 +25,7 @@ export async function searchMovies(
     throw new Error("Search query cannot be empty");
   }
 
-  const { limit = 10 } = options;
+  const { limit = 24 } = options;
   const qdrantClient = getQdrantClient();
   const COLLECTION_NAME = "movies";
 
@@ -58,6 +58,84 @@ export async function searchMovies(
     console.error("Error searching movies:", error);
     throw new Error(
       `Search failed: ${
+        error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
+  }
+}
+
+export async function getMovieById(
+  id: string | number
+): Promise<MovieData | null> {
+  const qdrantClient = getQdrantClient();
+  const COLLECTION_NAME = "movies";
+
+  try {
+    const retrieveResponse = await qdrantClient.retrieve(COLLECTION_NAME, {
+      ids: [id],
+      with_payload: true,
+      with_vector: true,
+    });
+
+    if (!retrieveResponse.length) {
+      return null;
+    }
+
+    return retrieveResponse[0].payload as unknown as MovieData;
+  } catch (error: unknown) {
+    console.error("Error retrieving movie:", error);
+    throw new Error(
+      `Retrieve failed: ${
+        error instanceof Error ? error.message : "Unknown error"
+      }`
+    );
+  }
+}
+
+export async function getSimilarMovies(
+  id: string | number,
+  options: SearchOptions = {}
+): Promise<MovieSearchResult[]> {
+  const { limit = 20 } = options;
+  const qdrantClient = getQdrantClient();
+  const COLLECTION_NAME = "movies";
+
+  try {
+    const retrieveResponse = await qdrantClient.retrieve(COLLECTION_NAME, {
+      ids: [id],
+      with_payload: true,
+      with_vector: true,
+    });
+
+    if (!retrieveResponse.length || !retrieveResponse[0].vector) {
+      throw new Error("Movie not found or vector not available");
+    }
+
+    const vector = retrieveResponse[0].vector as number[];
+    const searchResults = await qdrantClient.search(COLLECTION_NAME, {
+      vector: vector,
+      limit: limit + 1,
+      with_payload: true,
+    });
+
+    const filteredResults = searchResults.filter(
+      (result) => result.id.toString() !== id.toString()
+    );
+
+    const limitedResults = filteredResults.slice(0, limit);
+
+    return limitedResults.map((point) => ({
+      id: point.id,
+      score: point.score,
+      movie: point.payload as unknown as MovieData & {
+        original_index?: number;
+        template?: string;
+      },
+    }));
+  } catch (error: unknown) {
+    console.error("Error finding similar movies:", error);
+    throw new Error(
+      `Similar movies search failed: ${
         error instanceof Error ? error.message : "Unknown error"
       }`
     );

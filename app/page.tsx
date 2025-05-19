@@ -1,22 +1,20 @@
 import { MovieGrid } from "@/components/movie-grid";
 import { use } from "react";
-import { SearchLayout } from "@/components/search-layout";
-
-type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
+import { SearchLayout } from "@/components/search/search-layout";
+import { SearchParams } from "@/types";
 
 export default function Home(props: { searchParams: SearchParams }) {
   const searchParams = use(props.searchParams);
   const searchQuery = searchParams.query || null;
-  const filterQuery = searchParams.filter || null;
 
   return (
-    <div className="container py-24">
+    <div>
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
         <div className="md:col-span-4 lg:col-span-3">
           <SearchLayout />
         </div>
         <div className="md:col-span-8 lg:col-span-9">
-          <MovieGrid searchQuery={searchQuery} filterQuery={filterQuery} />
+          <MovieGrid searchQuery={searchQuery} />
         </div>
       </div>
     </div>

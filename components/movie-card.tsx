@@ -1,22 +1,28 @@
 import { Card } from "@/components/ui/card";
 import { MovieData } from "@/types";
 import { getHighResImageUrl } from "@/lib/utils";
+import Link from "next/link";
 
 export function MovieCard({ movie }: { movie: MovieData }) {
-  const highResImageUrl = getHighResImageUrl(movie.Poster_Link);
+  const highResImageUrl = getHighResImageUrl(movie.poster_path);
+  const movieId = movie.id;
 
   return (
-    <Card className="overflow-hidden flex flex-col h-full group p-0">
-      <div className="aspect-[2/3] w-full relative bg-muted">
-        {movie.Poster_Link && (
+    <Link href={`/movie/${movieId}`} className="block h-full">
+      <Card className="overflow-hidden h-full group p-0 flex items-center justify-center hover:shadow-md transition-shadow">
+        {movie.poster_path ? (
           <img
             src={highResImageUrl}
-            alt={movie.Series_Title}
-            className="h-full w-full object-cover"
+            alt={movie.title}
+            className="h-full w-full scale-104 object-contain transition-transform duration-300 group-hover:scale-109"
             loading="lazy"
           />
+        ) : (
+          <div className="w-full aspect-[2/3] bg-muted flex items-center justify-center p-4 text-center text-muted-foreground">
+            {movie.title}
+          </div>
         )}
-      </div>
-    </Card>
+      </Card>
+    </Link>
   );
 }
