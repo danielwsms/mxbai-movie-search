@@ -1,10 +1,13 @@
 import { getQdrantClient } from "../lib/qdrant";
 import { generateEmbeddings } from "../actions/embed";
 import fs from "fs";
-import { parse } from "csv-parse/sync";
 import path from "path";
-import { v4 as uuidv4 } from "uuid";
 import { MovieData } from "../types";
+import dotenv from "dotenv";
+import { v4 as uuidv4 } from "uuid";
+
+dotenv.config();
+
 const qdrantClient = getQdrantClient();
 
 const COLLECTION_NAME = "movies";
@@ -50,13 +53,10 @@ async function createCollection() {
 
 async function processMovies() {
   try {
-    const filePath = path.join(process.cwd(), "data", "imdb_top_1000.csv");
+    const filePath = path.join(process.cwd(), "data", "top_10k_movies.json");
     const fileContent = fs.readFileSync(filePath, "utf-8");
 
-    const movies: MovieData[] = parse(fileContent, {
-      columns: true,
-      skip_empty_lines: true,
-    });
+    const movies = JSON.parse(fileContent) as MovieData[];
 
     console.log(`Processing ${movies.length} movies...`);
 
@@ -65,7 +65,7 @@ async function processMovies() {
       const batch = movies.slice(i, i + BATCH_SIZE);
 
       const templates = batch.map((movie) =>
-        createMovieTemplate(movie.Series_Title, movie.Overview)
+        createMovieTemplate(movie.title, movie.overview)
       );
 
       console.log(
@@ -85,17 +85,15 @@ async function processMovies() {
       });
 
       const points = batch.map((movie, index) => {
-        const id = uuidv4();
-        const movieIndex = i + index;
         const embedding = embeddingResponse.data[index].embedding;
         const vector = Array.isArray(embedding) ? embedding : [];
 
         return {
-          id,
+          id: uuidv4(),
           vector,
           payload: {
             ...movie,
-            original_index: movieIndex,
+            original_index: i + index,
             template: templates[index],
           },
         };

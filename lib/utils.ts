@@ -5,14 +5,12 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getHighResImageUrl(posterUrl: string): string {
-  if (!posterUrl) return "";
+export function getHighResImageUrl(posterPath: string): string {
+  if (!posterPath) return "";
 
-  if (posterUrl.includes("m.media-amazon.com") && posterUrl.includes("._V1_")) {
-    const baseUrlParts = posterUrl.split("._V1_");
-    if (baseUrlParts.length > 0) {
-      return `${baseUrlParts[0]}._V1_SX1000.jpg`;
-    }
+  if (posterPath.startsWith("http")) {
+    return posterPath;
   }
-  return posterUrl;
+
+  return `https://image.tmdb.org/t/p/original${posterPath}`;
 }
