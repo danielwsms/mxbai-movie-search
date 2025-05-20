@@ -46,7 +46,7 @@ export async function searchMovies(
       with_payload: true,
     });
 
-    return searchResults.map((point) => ({
+    const results = searchResults.map((point) => ({
       id: point.id,
       score: point.score,
       movie: point.payload as unknown as MovieData & {
@@ -54,6 +54,8 @@ export async function searchMovies(
         template?: string;
       },
     }));
+
+    return results.sort((a, b) => b.movie.vote_count - a.movie.vote_count);
   } catch (error: unknown) {
     console.error("Error searching movies:", error);
     throw new Error(
@@ -124,7 +126,7 @@ export async function getSimilarMovies(
 
     const limitedResults = filteredResults.slice(0, limit);
 
-    return limitedResults.map((point) => ({
+    const results = limitedResults.map((point) => ({
       id: point.id,
       score: point.score,
       movie: point.payload as unknown as MovieData & {
@@ -132,6 +134,8 @@ export async function getSimilarMovies(
         template?: string;
       },
     }));
+
+    return results.sort((a, b) => b.movie.popularity - a.movie.popularity);
   } catch (error: unknown) {
     console.error("Error finding similar movies:", error);
     throw new Error(

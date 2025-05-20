@@ -45,10 +45,10 @@ export async function MovieRecommendations({
     return null;
   }
 
-  let recommendedMovies = movies;
-  if (filter && filter.trim()) {
-    recommendedMovies = await rerankRecommendations(filter, movies);
-  }
+  const recommendedMovies =
+    filter && filter.trim()
+      ? await rerankRecommendations(filter, movies)
+      : movies;
 
   return (
     <div className="mt-8">
