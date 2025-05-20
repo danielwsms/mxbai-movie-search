@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mxbai Movie Search
+
+A semantic movie search application built with Next.js and MixedBread AI, allowing users to search for movies using natural language queries and find semantically similar films based on plot, themes, and other features.
+
+## Features
+
+- **Semantic Search**: Find movies based on themes, concepts, and plot elements using natural language
+- **Similar Movie Recommendations**: Get movie recommendations based on semantic similarity
+- **Reranking**: Refine search results using advanced reranking capabilities
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js 20+ and npm
+- Qdrant running locally or remotely (see docker-compose.yml)
+- [Mixedbread API key](https://www.mixedbread.com/)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Setup
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone the repository:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   git clone https://github.com/yourusername/mxbai-movie-search.git
+   cd mxbai-movie-search
+   ```
 
-## Learn More
+2. Install dependencies:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   npm install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Create a `.env` file in the root directory with the following variables:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```
+   MIXEDBREAD_API_KEY=your_api_key_here
+   QDRANT_URL=http://localhost:6333
+   ```
 
-## Deploy on Vercel
+4. Start Qdrant using Docker:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   docker-compose up -d
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. Ingest movie data:
+
+   ```bash
+   npm run ingest
+   ```
+
+6. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+7. Open [http://localhost:3000](http://localhost:3000) to view the application
+
+## Data Ingestion
+
+The project includes a data ingestion script that:
+
+1. Creates a vector collection in Qdrant
+2. Processes the data from the movie dataset
+3. Generates embeddings using MixedBread's mixedbread-ai/mxbai-embed-large-v1 model
+4. Stores vectors and metadata in Qdrant
+
+## MixedBread Documentation
+
+This project utilizes Mixedbread Services for two key functions:
+
+### Embeddings
+
+The application uses `mixedbread-ai/mxbai-embed-large-v1` to convert movie descriptions into vector embeddings for semantic search.
+
+- [MixedBread Embeddings Overview](https://www.mixedbread.com/docs/embeddings/overview)
+- [Embedding Models Reference](https://www.mixedbread.com/docs/embeddings/models)
+
+### Reranking
+
+The application uses `mixedbread-ai/mxbai-rerank-large-v2` to rerank search results based on relevance to the user's query.
+
+- [MixedBread Reranking Overview](https://www.mixedbread.com/docs/reranking/overview)
+- [Reranking Models Reference](https://www.mixedbread.com/docs/reranking/models)
