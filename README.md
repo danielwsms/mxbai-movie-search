@@ -1,86 +1,46 @@
-# Mxbai Movie Search
+# MxBai Movie Search
 
-A semantic movie search application built with Next.js and MixedBread AI, allowing users to search for movies using natural language queries and find semantically similar films based on plot, themes, and other features.
+A semantic movie search application using MixedBread AI embeddings and Qdrant vector database.
 
-## Features
+## Setup
 
-- **Semantic Search**: Find movies based on themes, concepts, and plot elements using natural language
-- **Similar Movie Recommendations**: Get movie recommendations based on semantic similarity
-- **Reranking**: Refine search results using advanced reranking capabilities
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js 20+ and npm
-- Qdrant running locally or remotely (see docker-compose.yml)
-- [Mixedbread API key](https://www.mixedbread.com/)
-
-### Setup
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/yourusername/mxbai-movie-search.git
-   cd mxbai-movie-search
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Create a `.env` file in the root directory with the following variables:
+1. Create a `.env` file with the following variables:
 
    ```
-   MIXEDBREAD_API_KEY=your_api_key_here
-   QDRANT_URL=http://localhost:6333
+   MXBAI_API_KEY=your_mixedbread_api_key
+   QDRANT_URL=your_qdrant_url_or_localhost
    ```
 
-4. Start Qdrant using Docker:
+2. Install the required packages:
 
-   ```bash
-   docker-compose up -d
+   ```
+   pip install -r requirements.txt
    ```
 
-5. Ingest movie data:
+3. Prepare your movie data in JSON format in `data/top_10k_movies.json`
 
-   ```bash
-   npm run ingest
+4. Run the ingest script to embed movies and store them in Qdrant:
+
+   ```
+   python ingest.py
    ```
 
-6. Start the development server:
-
-   ```bash
-   npm run dev
+5. Run the Streamlit app:
+   ```
+   streamlit run app.py
    ```
 
-7. Open [http://localhost:3000](http://localhost:3000) to view the application
+## Usage
 
-## Data Ingestion
+1. Enter a search query in the text input field
+2. The app will find the 20 most semantically similar movies to your query
+3. Results will be displayed in a grid showing movie posters and titles
 
-The project includes a data ingestion script that:
+## Data Format
 
-1. Creates a vector collection in Qdrant
-2. Processes the data from the movie dataset
-3. Generates embeddings using MixedBread's mixedbread-ai/mxbai-embed-large-v1 model
-4. Stores vectors and metadata in Qdrant
+Your movie data should include at least:
 
-## MixedBread Documentation
-
-This project utilizes Mixedbread Services for two key functions:
-
-### Embeddings
-
-The application uses `mixedbread-ai/mxbai-embed-large-v1` to convert movie descriptions into vector embeddings for semantic search.
-
-- [MixedBread Embeddings Overview](https://www.mixedbread.com/docs/embeddings/overview)
-- [Embedding Models Reference](https://www.mixedbread.com/docs/embeddings/models)
-
-### Reranking
-
-The application uses `mixedbread-ai/mxbai-rerank-large-v2` to rerank search results based on relevance to the user's query.
-
-- [MixedBread Reranking Overview](https://www.mixedbread.com/docs/reranking/overview)
-- [Reranking Models Reference](https://www.mixedbread.com/docs/reranking/models)
+- `title`: Movie title
+- `overview`: Movie description
+- `poster_path`: Relative path to the movie poster (used with TMDB API)
+- `keywords`: List of keywords or tags for the movie (optional)

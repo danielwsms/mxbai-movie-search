@@ -1,0 +1,4 @@
+streamlit
+qdrant-client
+mixedbread
+python-dotenv
