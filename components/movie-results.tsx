@@ -5,7 +5,7 @@ export async function MovieResults({ query }: { query: string | null }) {
   if (!query) {
     return (
       <div className="text-center p-8 text-muted-foreground">
-        Search for movies to see results
+        Enter a query to see results
       </div>
     );
   }

@@ -1,6 +1,6 @@
 "use server";
 
-import { getQdrantClient } from "@/lib/qdrant";
+import { qdrantClient } from "@/lib/qdrant";
 import { generateEmbeddings } from "./embed";
 import { MovieData } from "@/types";
 
@@ -26,7 +26,6 @@ export async function searchMovies(
   }
 
   const { limit = 24 } = options;
-  const qdrantClient = getQdrantClient();
   const COLLECTION_NAME = "movies";
 
   try {
@@ -69,7 +68,6 @@ export async function searchMovies(
 export async function getMovieById(
   id: string | number
 ): Promise<MovieData | null> {
-  const qdrantClient = getQdrantClient();
   const COLLECTION_NAME = "movies";
 
   try {
@@ -99,7 +97,6 @@ export async function getSimilarMovies(
   options: SearchOptions = {}
 ): Promise<MovieSearchResult[]> {
   const { limit = 20 } = options;
-  const qdrantClient = getQdrantClient();
   const COLLECTION_NAME = "movies";
 
   try {

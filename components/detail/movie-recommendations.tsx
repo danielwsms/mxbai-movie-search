@@ -2,8 +2,6 @@ import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { MovieData } from "@/types";
 import { getHighResImageUrl } from "@/lib/utils";
-import { RecommendationsFilterSearch } from "./recommendations-filter-search";
-import { rerankRecommendations } from "@/actions/rerank-recommendations";
 
 interface MovieRecommendationProps {
   movie: MovieData;
@@ -36,19 +34,12 @@ function MovieRecommendationCard({ movie, id }: MovieRecommendationProps) {
 
 export async function MovieRecommendations({
   movies,
-  filter,
 }: {
   movies: Array<{ movie: MovieData; score: number; id: string | number }>;
-  filter?: string;
 }) {
   if (!movies || movies.length === 0) {
     return null;
   }
-
-  const recommendedMovies =
-    filter && filter.trim()
-      ? await rerankRecommendations(filter, movies)
-      : movies;
 
   return (
     <div className="mt-8">
@@ -56,12 +47,9 @@ export async function MovieRecommendations({
         <h2 className="text-lg font-semibold md:text-2xl md:font-bold">
           You may also like
         </h2>
-        <div className="w-full md:w-64">
-          <RecommendationsFilterSearch />
-        </div>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        {recommendedMovies.map((item) => (
+        {movies.map((item) => (
           <MovieRecommendationCard
             key={item.id}
             movie={item.movie}

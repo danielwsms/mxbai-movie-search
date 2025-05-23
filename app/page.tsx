@@ -8,15 +8,9 @@ export default function Home(props: { searchParams: SearchParams }) {
   const searchQuery = searchParams.query || null;
 
   return (
-    <div>
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-        <div className="md:col-span-4 lg:col-span-3">
-          <SearchLayout />
-        </div>
-        <div className="md:col-span-8 lg:col-span-9">
-          <MovieGrid searchQuery={searchQuery} />
-        </div>
-      </div>
+    <div className="flex flex-col gap-4">
+      <SearchLayout />
+      <MovieGrid searchQuery={searchQuery} />
     </div>
   );
 }

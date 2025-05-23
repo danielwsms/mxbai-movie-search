@@ -1,22 +1,41 @@
 "use client";
 
 import { QuerySearch } from "./query-search";
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import SuggestionList from "./suggestion-list";
 
 export function SearchLayout() {
   return (
-    <Card className="p-4 py-6 space-y-4">
-      <div className="space-y-2">
-        <div className="space-y-1">
-          <label htmlFor="query" className="font-bold">
-            Movie Search
-          </label>
-          <p className="text-xs text-muted-foreground">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <Card>
+        <CardHeader>
+          <CardTitle>Movie Search</CardTitle>
+          <CardDescription>
             Retrieve movies using semantic search
-          </p>
-        </div>
-        <QuerySearch />
-      </div>
-    </Card>
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent>
+          <QuerySearch />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Suggestions</CardTitle>
+          <CardDescription>Try these queries to get started</CardDescription>
+        </CardHeader>
+
+        <CardContent>
+          <SuggestionList />
+        </CardContent>
+      </Card>
+    </div>
   );
 }

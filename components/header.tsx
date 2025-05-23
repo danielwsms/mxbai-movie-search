@@ -1,5 +1,6 @@
 import Link from "next/link";
-import ThemeToggler from "./theme-toggler";
+import ThemeToggle from "./theme-toggle";
+import { Separator } from "./ui/separator";
 
 export default function Header() {
   return (
@@ -12,10 +13,19 @@ export default function Header() {
           </Link>
         </div>
 
-        <div className="grow flex justify-center"></div>
-
         <div className="flex-1 flex justify-end items-center gap-4">
-          <ThemeToggler />
+          <Link href="https://www.mixedbread.com/docs" target="_blank">
+            Docs
+          </Link>
+          <Separator orientation="vertical" />
+          <Link
+            href="https://github.com/danielwsms/mxbai-movie-search"
+            target="_blank"
+          >
+            Code
+          </Link>
+          <Separator orientation="vertical" />
+          <ThemeToggle />
         </div>
       </div>
     </header>

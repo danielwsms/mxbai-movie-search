@@ -6,7 +6,7 @@ import { MovieDetailSkeleton } from "@/components/detail/movie-detail-skeleton";
 import { MovieRecommendations } from "@/components/detail/movie-recommendations";
 import { MovieRecommendationsSkeleton } from "@/components/detail/movie-recommendations-skeleton";
 import { Suspense } from "react";
-import { SearchParams, Params } from "@/types";
+import { Params } from "@/types";
 
 function MovieNotFound() {
   return (
@@ -26,7 +26,7 @@ function MovieError({ error }: { error: Error }) {
   );
 }
 
-async function MovieContent({ id, filter }: { id: string; filter?: string }) {
+async function MovieContent({ id }: { id: string }) {
   try {
     const movie = await getMovieById(id);
 
@@ -39,7 +39,7 @@ async function MovieContent({ id, filter }: { id: string; filter?: string }) {
     return (
       <>
         <MovieDetail movie={movie} />
-        <MovieRecommendations movies={similarMovies} filter={filter} />
+        <MovieRecommendations movies={similarMovies} />
       </>
     );
   } catch (error) {
@@ -51,13 +51,8 @@ async function MovieContent({ id, filter }: { id: string; filter?: string }) {
   }
 }
 
-export default async function MoviePage(props: {
-  params: Params;
-  searchParams: SearchParams;
-}) {
+export default async function MoviePage(props: { params: Params }) {
   const params = await props.params;
-  const searchParams = await props.searchParams;
-  const filter = searchParams.filter as string | undefined;
 
   return (
     <div>
@@ -70,7 +65,7 @@ export default async function MoviePage(props: {
           </>
         }
       >
-        <MovieContent id={params.id} filter={filter} />
+        <MovieContent id={params.id} />
       </Suspense>
     </div>
   );
