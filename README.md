@@ -70,5 +70,5 @@ The project includes a data ingestion script that:
 
 The application uses `mixedbread-ai/mxbai-embed-large-v1` to convert movie descriptions into vector embeddings for semantic search.
 
-- [MixedBread Embeddings Overview](https://www.mixedbread.com/docs/embeddings/overview)
+- [Mixedbread Embeddings Overview](https://www.mixedbread.com/docs/embeddings/overview)
 - [Embedding Models Reference](https://www.mixedbread.com/docs/embeddings/models)
