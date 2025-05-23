@@ -1,4 +1,4 @@
-import { getQdrantClient } from "../lib/qdrant";
+import { qdrantClient } from "../lib/qdrant";
 import { generateEmbeddings } from "../actions/embed";
 import fs from "fs";
 import path from "path";
@@ -7,8 +7,6 @@ import dotenv from "dotenv";
 import { v4 as uuidv4 } from "uuid";
 
 dotenv.config();
-
-const qdrantClient = getQdrantClient();
 
 const COLLECTION_NAME = "movies";
 

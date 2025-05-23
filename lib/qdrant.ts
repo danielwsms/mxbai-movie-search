@@ -1,37 +1,13 @@
 import { QdrantClient } from "@qdrant/js-client-rest";
+import dotenv from "dotenv";
 
-const QDRANT_URL = process.env.QDRANT_URL || "http://localhost:6335";
-const QDRANT_API_KEY = process.env.QDRANT_API_KEY;
+dotenv.config();
 
-interface QdrantClientConfig {
-  url: string;
-  apiKey?: string;
-  timeout?: number;
+if (!process.env.QDRANT_URL) {
+  throw new Error("QDRANT_URL is not set");
 }
 
-class QdrantClientSingleton {
-  private static instance: QdrantClient | null = null;
-
-  private constructor() {
-  }
-
-  public static getInstance(): QdrantClient {
-    if (!QdrantClientSingleton.instance) {
-      const config: QdrantClientConfig = {
-        url: QDRANT_URL,
-      };
-
-      if (QDRANT_API_KEY) {
-        config.apiKey = QDRANT_API_KEY;
-      }
-
-      QdrantClientSingleton.instance = new QdrantClient(config);
-    }
-
-    return QdrantClientSingleton.instance;
-  }
-}
-
-export const getQdrantClient = (): QdrantClient => {
-  return QdrantClientSingleton.getInstance();
-};
+export const qdrantClient = new QdrantClient({
+  url: process.env.QDRANT_URL,
+  apiKey: process.env.QDRANT_API_KEY,
+});

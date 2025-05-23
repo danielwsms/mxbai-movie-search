@@ -14,7 +14,9 @@ export default function Header() {
         </div>
 
         <div className="flex-1 flex justify-end items-center gap-4">
-          <Link href="https://docs.mxbai.ai">Docs</Link>
+          <Link href="https://www.mixedbread.com/docs" target="_blank">
+            Docs
+          </Link>
           <Separator orientation="vertical" />
           <Link
             href="https://github.com/danielwsms/mxbai-movie-search"
