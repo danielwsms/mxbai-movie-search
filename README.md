@@ -6,7 +6,6 @@ A semantic movie search application built with Next.js and MixedBread AI, allowi
 
 - **Semantic Search**: Find movies based on themes, concepts, and plot elements using natural language
 - **Similar Movie Recommendations**: Get movie recommendations based on semantic similarity
-- **Reranking**: Refine search results using advanced reranking capabilities
 
 ## Getting Started
 
@@ -67,20 +66,9 @@ The project includes a data ingestion script that:
 3. Generates embeddings using MixedBread's mixedbread-ai/mxbai-embed-large-v1 model
 4. Stores vectors and metadata in Qdrant
 
-## MixedBread Documentation
-
-This project utilizes Mixedbread Services for two key functions:
-
 ### Embeddings
 
 The application uses `mixedbread-ai/mxbai-embed-large-v1` to convert movie descriptions into vector embeddings for semantic search.
 
 - [MixedBread Embeddings Overview](https://www.mixedbread.com/docs/embeddings/overview)
 - [Embedding Models Reference](https://www.mixedbread.com/docs/embeddings/models)
-
-### Reranking
-
-The application uses `mixedbread-ai/mxbai-rerank-large-v2` to rerank search results based on relevance to the user's query.
-
-- [MixedBread Reranking Overview](https://www.mixedbread.com/docs/reranking/overview)
-- [Reranking Models Reference](https://www.mixedbread.com/docs/reranking/models)

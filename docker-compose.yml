@@ -3,8 +3,8 @@ services:
     image: qdrant/qdrant:latest
     container_name: qdrant
     ports:
-      - "6335:6333" # HTTP API (mapped from default 6333 to 6335)
-      - "6336:6334" # gRPC API (mapped from default 6334 to 6336)
+      - "6333:6333" # HTTP API
+      - "6334:6334" # gRPC API
     volumes:
       - qdrant_data:/qdrant/storage
     environment:
