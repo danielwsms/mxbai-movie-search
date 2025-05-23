@@ -36,14 +36,6 @@ export default function SuggestionList() {
       >
         <Suggestion query="A rat cooking in paris" />
       </motion.li>
-
-      <motion.li
-        {...variants}
-        transition={{ delay: 0.3 }}
-        className="order-1 sm:order-3"
-      >
-        <Suggestion query="Batman fighting the joker" />
-      </motion.li>
     </ul>
   );
 }
