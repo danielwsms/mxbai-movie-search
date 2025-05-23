@@ -14,6 +14,8 @@ export function QuerySearch() {
   useEffect(() => {
     if (currentQuery) {
       localStorage.setItem("lastSearchQuery", currentQuery);
+    } else if (inputRef.current) {
+      inputRef.current.value = "";
     }
   }, [currentQuery]);
 
