@@ -1,4 +1,4 @@
-# Movie Search App
+# Sematic movie search
 
 A Streamlit application that enables semantic movie discovery using natural language queries powered by Mixedbread AI embeddings and Qdrant vector database.
 
