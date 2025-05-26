@@ -1,74 +1,74 @@
-# Mxbai Movie Search
+# Movie Search App
 
-A semantic movie search application built with Next.js and MixedBread AI, allowing users to search for movies using natural language queries and find semantically similar films based on plot, themes, and other features.
+A Streamlit application that enables semantic movie discovery using natural language queries powered by Mixedbread AI embeddings and Qdrant vector database.
 
 ## Features
 
-- **Semantic Search**: Find movies based on themes, concepts, and plot elements using natural language
-- **Similar Movie Recommendations**: Get movie recommendations based on semantic similarity
+- **Semantic Movie Search**: Search through 10,000+ movies using natural language queries like "space adventure with robots"
+- **AI-Powered Embeddings**: Leverage Mixedbread AI's high-quality `mxbai-embed-large-v1` model for semantic search.
+- **Interactive Interface**: Clean, user-friendly Streamlit interface with adjustable search parameters
 
-## Getting Started
+## Prerequisites
 
-### Prerequisites
+- Python 3.11+
+- Docker (for Qdrant database)
+- Mixedbread AI API key
+- Movie dataset
 
-- Node.js 20+ and npm
-- Qdrant running locally or remotely (see docker-compose.yml)
-- [Mixedbread API key](https://www.mixedbread.com/)
+## Resources
 
-### Setup
+- **[Mixedbread Documentation](https://www.mixedbread.com/docs)** - Complete API documentation and guides
+- **[Mixedbread Platform](https://www.mixedbread.com/)** - Sign up and manage your API keys
 
-1. Clone the repository:
+## Setup
 
+1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/mxbai-movie-search.git
+   git clone https://github.com/danielwsms/mxbai-movie-search
    cd mxbai-movie-search
    ```
 
-2. Install dependencies:
-
+2. **Install dependencies**
    ```bash
-   npm install
+   pip install -r requirements.txt
    ```
 
-3. Create a `.env` file in the root directory with the following variables:
-
+3. **Configure environment variables**
+   Create a `.env` file in the root directory:
+   ```env
+   MXBAI_API_KEY=your_mixedbread_api_key
    ```
-   MIXEDBREAD_API_KEY=your_api_key_here
-   QDRANT_URL=http://localhost:6333
-   ```
 
-4. Start Qdrant using Docker:
-
+4. **Start Qdrant database**
    ```bash
-   docker-compose up -d
+   docker run -p 6333:6333 -p 6334:6334 qdrant/qdrant
    ```
 
-5. Ingest movie data:
-
+5. **Ingest the movie data**
    ```bash
-   npm run ingest
+   python ingest.py
    ```
+   This script will:
+   - Create embeddings for all movies using Mixedbread AI
+   - Set up a Qdrant collection for vector storage
+   - Upload movie data and embeddings to the vector database
 
-6. Start the development server:
-
+6. **Run the application**
    ```bash
-   npm run dev
+   streamlit run app.py
    ```
 
-7. Open [http://localhost:3000](http://localhost:3000) to view the application
+## Usage
 
-## Data Ingestion
+1. Open the application in your browser (typically `http://localhost:8501`)
+2. Enter your movie search query in the text input using natural language:
+   - "space adventure with robots"
+   - "romantic comedy in Paris"
+   - "superhero movie with dark themes"
+3. Adjust the number of movies to retrieve using the sidebar slider
 
-The project includes a data ingestion script that:
+## How It Works
 
-1. Creates a vector collection in Qdrant
-2. Processes the data from the movie dataset
-3. Generates embeddings using MixedBread's mixedbread-ai/mxbai-embed-large-v1 model
-4. Stores vectors and metadata in Qdrant
-
-### Embeddings
-
-The application uses `mixedbread-ai/mxbai-embed-large-v1` to convert movie descriptions into vector embeddings for semantic search.
-
-- [Mixedbread Embeddings Overview](https://www.mixedbread.com/docs/embeddings/overview)
-- [Embedding Models Reference](https://www.mixedbread.com/docs/embeddings/models)
+1. **Query Processing**: Your search query is processed and embedded using Mixedbread AI's model
+2. **Movie Retrieval**: The most relevant movies are retrieved from the Qdrant vector database using cosine similarity
+3. **Visual Display**: Retrieved movies are displayed as cards
